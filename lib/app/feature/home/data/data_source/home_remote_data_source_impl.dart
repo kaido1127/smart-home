@@ -42,9 +42,13 @@ class _HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<void> removeHome({required String homeId}) async {
-    await _collectionDelete(
-        collectionRef:
-            _firestore.collection('home').doc(homeId).collection('list_room'));
+    final listRoomOfHomeRef = await _firestore
+        .collection('room')
+        .where('home_id', isEqualTo: homeId)
+        .get();
+    for (var roomRef in listRoomOfHomeRef.docs) {
+      await _firestore.collection('room').doc(roomRef.id).delete();
+    }
     await _firestore.collection('home').doc(homeId).delete();
   }
 
@@ -54,15 +58,15 @@ class _HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     throw UnimplementedError();
   }
 
-  Future<void> _collectionDelete(
-      {required CollectionReference collectionRef}) async {
-    WriteBatch batch = _firestore.batch();
-    QuerySnapshot querySnapshot = await collectionRef.get();
+  // Future<void> _collectionDelete(
+  //     {required CollectionReference collectionRef}) async {
+  //   WriteBatch batch = _firestore.batch();
+  //   QuerySnapshot querySnapshot = await collectionRef.get();
 
-    for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-      batch.delete(doc.reference);
-    }
+  //   for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+  //     batch.delete(doc.reference);
+  //   }
 
-    await batch.commit();
-  }
+  //   await batch.commit();
+  // }
 }

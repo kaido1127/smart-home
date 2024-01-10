@@ -489,7 +489,7 @@ packages:
     source: hosted
     version: "2.4.4"
   google_sign_in_web:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: google_sign_in_web
       sha256: "794f5494a945d6dd2654c52f979594ecd2558e5c82ce8272295ba371c93015e6"

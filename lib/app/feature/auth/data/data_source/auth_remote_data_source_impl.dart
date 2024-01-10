@@ -20,10 +20,14 @@ class _AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   Future<UserCredential?> signInWithGoogle() async {
-    await InternetAddress.lookup('google.com');
+    if (defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.android) {
+      await InternetAddress.lookup('google.com');
+    }
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
 
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,

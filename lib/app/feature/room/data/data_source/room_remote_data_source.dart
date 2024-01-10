@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smart_home/app/feature/home/data/model/home_model.dart';
 import 'package:smart_home/app/feature/room/data/model/room_model.dart';
 
 part 'room_remote_data_source_impl.dart';

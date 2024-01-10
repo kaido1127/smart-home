@@ -25,6 +25,8 @@ class _RoomCardState extends ConsumerState<RoomCard> {
 
     return InkWell(
       onLongPress: () => showRemoveRoomDialog(),
+      onTap: () =>
+          context.push('/summary_device_page', extra: widget.roomEntity),
       child: Card(
         color: getColorFromRoomType(roomType),
         elevation: 5,

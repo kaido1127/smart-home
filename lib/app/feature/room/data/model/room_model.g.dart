@@ -34,4 +34,5 @@ const _$RoomTypeEnumMap = {
   RoomType.guestRoom: 'guestRoom',
   RoomType.storageRoom: 'storageRoom',
   RoomType.garage: 'garage',
+  RoomType.lobby: 'lobby',
 };

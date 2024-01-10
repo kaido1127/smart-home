@@ -10,11 +10,10 @@ class _RoomRemoteDataSourceImpl implements RoomRemoteDataSource {
   Future<void> createRoom({required RoomModel roomModel}) async {
     try {
       await _firestore
-          .collection('home')
-          .doc(roomModel.homeId)
-          .collection('list_room')
+          .collection('room')
           .doc(roomModel.createAt.toString())
           .set(roomModel.toJson());
+      _increaseRoomCount(homeId: roomModel.homeId);
     } on Exception catch (e) {
       return Future.error(e);
     }
@@ -24,9 +23,8 @@ class _RoomRemoteDataSourceImpl implements RoomRemoteDataSource {
   Stream<List<RoomModel>> getAllRoom({required String homeId}) {
     try {
       return _firestore
-          .collection('home')
-          .doc(homeId)
-          .collection('list_room')
+          .collection('room')
+          .where('home_id', isEqualTo: homeId)
           .snapshots()
           .map((listRoomRef) => listRoomRef.docs
               .map((roomRef) => RoomModel.fromJson(roomRef.data()))
@@ -39,17 +37,35 @@ class _RoomRemoteDataSourceImpl implements RoomRemoteDataSource {
   @override
   Future<void> removeRoom(
       {required String roomId, required String homeId}) async {
-    await _firestore
-        .collection('home')
-        .doc(homeId)
-        .collection('list_room')
-        .doc(roomId)
-        .delete();
+    await _firestore.collection('room').doc(roomId).delete();
+    _decreaseRoomCount(homeId: homeId);
   }
 
   @override
   Future<void> updateHome({required RoomModel roomModel}) {
     // TODO: implement updateHome
     throw UnimplementedError();
+  }
+
+  Future<void> _increaseRoomCount({required String homeId}) async {
+    final homeRef = await _firestore.collection('home').doc(homeId).get();
+    if (homeRef.exists && homeRef.data() != null) {
+      final HomeModel homeModel = HomeModel.fromJson(homeRef.data()!);
+      await _firestore
+          .collection('home')
+          .doc(homeId)
+          .update({'room_count': homeModel.roomCount + 1});
+    }
+  }
+
+  Future<void> _decreaseRoomCount({required String homeId}) async {
+    final homeRef = await _firestore.collection('home').doc(homeId).get();
+    if (homeRef.exists && homeRef.data() != null) {
+      final HomeModel homeModel = HomeModel.fromJson(homeRef.data()!);
+      await _firestore
+          .collection('home')
+          .doc(homeId)
+          .update({'room_count': homeModel.roomCount - 1});
+    }
   }
 }

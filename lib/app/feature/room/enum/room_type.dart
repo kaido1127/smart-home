@@ -10,6 +10,7 @@ enum RoomType {
   guestRoom,
   storageRoom,
   garage,
+  lobby,
 }
 
 String getRoomTypeName(RoomType roomType) {
@@ -32,6 +33,8 @@ String getRoomTypeName(RoomType roomType) {
       return 'Gara';
     case RoomType.officeRoom:
       return 'Phòng Làm Việc';
+    case RoomType.lobby:
+      return 'Sảnh';
   }
 }
 
@@ -55,6 +58,8 @@ Color getColorFromRoomType(RoomType roomType) {
       return Colors.indigo;
     case RoomType.garage:
       return Colors.brown;
+    case RoomType.lobby:
+      return Colors.black87;
   }
 }
 
@@ -78,5 +83,7 @@ IconData getIconFromRoomType(RoomType roomType) {
       return Icons.archive_outlined;
     case RoomType.garage:
       return Icons.directions_car_outlined;
+    case RoomType.lobby:
+      return Icons.roundabout_left_outlined;
   }
 }

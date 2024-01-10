@@ -49,19 +49,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             width: contextSize.width * 0.9,
             child: const LoginButtonWidget(),
           ),
-          // Positioned(
-          //     child: ref.watch(authControllerProvider).when(
-          //         data: (user) => (user != null)
-          //             ? ElevatedButton.icon(
-          //                 onPressed: () => ref
-          //                     .read(authControllerProvider.notifier)
-          //                     .logout(),
-          //                 icon: const Icon(Icons.logout),
-          //                 label: const Text('Logout'),
-          //               )
-          //             : const SizedBox(height: 1,width: 1),
-          //         error: (e, st) => const SizedBox(),
-          //         loading: () => const SizedBox()))
+          Positioned(
+              bottom: contextSize.height * 0.05,
+              left: contextSize.width * 0.05,
+              width: contextSize.width * 0.9,
+              child: ref.watch(authControllerProvider).when(
+                  data: (user) => (user != null)
+                      ? ElevatedButton.icon(
+                          onPressed: () => ref
+                              .read(authControllerProvider.notifier)
+                              .logout(),
+                          icon: const Icon(Icons.logout),
+                          label: const Text('Logout'),
+                        )
+                      : const SizedBox(height: 1, width: 1),
+                  error: (e, st) => const SizedBox(),
+                  loading: () => const SizedBox()))
         ],
       ),
     ));

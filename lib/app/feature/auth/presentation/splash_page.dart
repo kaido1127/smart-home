@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smart_home/app/app.dart';
-import 'package:smart_home/app/feature/shared/string_common.dart';
+import 'package:smart_home/app/shared/string_common.dart';
 
 late Size deviceSize;
 

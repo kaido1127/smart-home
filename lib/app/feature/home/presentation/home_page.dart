@@ -7,7 +7,7 @@ import 'package:smart_home/app/feature/auth/presentation/controller/auth_control
 import 'package:smart_home/app/feature/home/presentation/controller/home_controller.dart';
 import 'package:smart_home/app/feature/home/presentation/widget/create_home_form.dart';
 import 'package:smart_home/app/feature/home/presentation/widget/home_card.dart';
-import 'package:smart_home/app/feature/shared/widget/empty_widget.dart';
+import 'package:smart_home/app/shared/widget/empty_widget.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});

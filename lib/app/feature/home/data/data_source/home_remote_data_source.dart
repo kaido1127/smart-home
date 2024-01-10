@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_home/app/feature/home/data/model/home_model.dart';
-import 'package:smart_home/app/feature/shared/helpper/firebase_extention_function.dart';
+import 'package:smart_home/app/shared/helpper/firebase_extention_function.dart';
 
 part 'home_remote_data_source_impl.dart';
 

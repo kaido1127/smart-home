@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_home/app/app.dart';
 import 'package:smart_home/app/feature/auth/presentation/widget/login_button_widget.dart';
-import 'package:smart_home/app/feature/shared/string_common.dart';
+import 'package:smart_home/app/shared/string_common.dart';
 
 import 'controller/auth_controller.dart';
 

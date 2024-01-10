@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smart_home/app/app.dart';
 import 'package:smart_home/app/feature/auth/presentation/controller/auth_controller.dart';
-import 'package:smart_home/app/feature/shared/string_common.dart';
+import 'package:smart_home/app/shared/string_common.dart';
 
 class LoginButtonWidget extends ConsumerStatefulWidget {
   const LoginButtonWidget({super.key});

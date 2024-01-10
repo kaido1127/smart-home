@@ -7,7 +7,7 @@ import 'package:smart_home/app/feature/home/presentation/controller/home_control
 import 'package:smart_home/app/feature/room/presentation/controller/room_controller.dart';
 import 'package:smart_home/app/feature/room/presentation/widget/create_room_form.dart';
 import 'package:smart_home/app/feature/room/presentation/widget/room_card.dart';
-import 'package:smart_home/app/feature/shared/widget/empty_widget.dart';
+import 'package:smart_home/app/shared/widget/empty_widget.dart';
 
 class SummaryRoomPage extends ConsumerStatefulWidget {
   final HomeEntity homeEntity;

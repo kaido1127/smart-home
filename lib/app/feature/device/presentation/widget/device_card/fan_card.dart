@@ -4,11 +4,6 @@ import 'package:smart_home/app/app.dart';
 import 'package:smart_home/app/feature/device/domain/device_entity.dart';
 import 'package:smart_home/app/feature/device/presentation/controller/device_controller.dart';
 
-final fanSpeedLevelStateProvider = StateProvider.autoDispose
-    .family<double, FanEntity>((ref, fan) => fan.speedLv);
-final isActiveStateProvider = StateProvider.autoDispose
-    .family<bool, FanEntity>((ref, fan) => fan.isActive);
-
 class FanCard extends ConsumerStatefulWidget {
   final FanEntity fanEntity;
   const FanCard({super.key, required this.fanEntity});
@@ -24,14 +19,12 @@ class _FanCardState extends ConsumerState<FanCard> {
       color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold);
   @override
   Widget build(BuildContext context) {
-    final double brightnessLv =
-        ref.watch(fanSpeedLevelStateProvider(widget.fanEntity));
-    final Color themeColor = Colors.blue.withOpacity(brightnessLv);
+    final double fanSpeedLv = widget.fanEntity.speedLv;
+    final bool isActive = widget.fanEntity.isActive;
+    final Color themeColor = Colors.blue.withOpacity(fanSpeedLv);
     return Card(
       elevation: 5,
-      color: ref.watch(isActiveStateProvider(widget.fanEntity))
-          ? themeColor
-          : Colors.grey,
+      color: isActive ? themeColor : Colors.grey,
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: SizedBox(
@@ -66,16 +59,8 @@ class _FanCardState extends ConsumerState<FanCard> {
                     ),
                   )),
                   Switch(
-                      value: ref.watch(isActiveStateProvider(widget.fanEntity)),
+                      value: isActive,
                       onChanged: (value) {
-                        ref
-                            .read(isActiveStateProvider(widget.fanEntity)
-                                .notifier)
-                            .state = value;
-                        ref
-                            .read(fanSpeedLevelStateProvider(widget.fanEntity)
-                                .notifier)
-                            .state = (value) ? 0.7 : 0;
                         ref
                             .read(deviceControllerProvider(
                                     widget.fanEntity.roomId)
@@ -102,14 +87,10 @@ class _FanCardState extends ConsumerState<FanCard> {
                   ),
                   ToggleButtons(
                     isSelected: [
-                      ref.watch(fanSpeedLevelStateProvider(widget.fanEntity)) ==
-                          0,
-                      ref.watch(fanSpeedLevelStateProvider(widget.fanEntity)) ==
-                          0.3,
-                      ref.watch(fanSpeedLevelStateProvider(widget.fanEntity)) ==
-                          0.7,
-                      ref.watch(fanSpeedLevelStateProvider(widget.fanEntity)) ==
-                          1,
+                      fanSpeedLv == 0,
+                      fanSpeedLv == 0.3,
+                      fanSpeedLv == 0.7,
+                      fanSpeedLv == 1,
                     ],
                     onPressed: (index) {
                       late double newValue;
@@ -124,11 +105,6 @@ class _FanCardState extends ConsumerState<FanCard> {
                         case 3:
                           newValue = 1;
                       }
-
-                      ref
-                          .read(fanSpeedLevelStateProvider(widget.fanEntity)
-                              .notifier)
-                          .state = newValue;
 
                       ref
                           .read(
@@ -155,7 +131,7 @@ class _FanCardState extends ConsumerState<FanCard> {
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "3",
+                        "Max",
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),

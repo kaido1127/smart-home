@@ -4,10 +4,10 @@ import 'package:smart_home/app/app.dart';
 import 'package:smart_home/app/feature/device/domain/device_entity.dart';
 import 'package:smart_home/app/feature/device/presentation/controller/device_controller.dart';
 
-final brightnessLevelStateProvider = StateProvider.autoDispose
-    .family<double, BulbsEntity>((ref, bulbs) => bulbs.brightnessLv);
-final isActiveStateProvider = StateProvider.autoDispose
-    .family<bool, BulbsEntity>((ref, bulbs) => bulbs.isActive);
+// final brightnessLevelStateProvider = StateProvider.autoDispose
+//     .family<double, BulbsEntity>((ref, bulbs) => bulbs.brightnessLv);
+// final isActiveStateProvider = StateProvider.autoDispose
+//     .family<bool, BulbsEntity>((ref, bulbs) => bulbs.isActive);
 
 class BulbsCard extends ConsumerStatefulWidget {
   final BulbsEntity bulbsEntity;
@@ -24,14 +24,12 @@ class _BulbsCardState extends ConsumerState<BulbsCard> {
       color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold);
   @override
   Widget build(BuildContext context) {
-    final double brightnessLv =
-        ref.watch(brightnessLevelStateProvider(widget.bulbsEntity));
+    final double brightnessLv = widget.bulbsEntity.brightnessLv;
+    final bool isActive = widget.bulbsEntity.isActive;
     final Color themeColor = Colors.yellow.withOpacity(brightnessLv);
     return Card(
       elevation: 5,
-      color: ref.watch(isActiveStateProvider(widget.bulbsEntity))
-          ? themeColor
-          : Colors.grey,
+      color: isActive ? themeColor : Colors.grey,
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: SizedBox(
@@ -73,18 +71,8 @@ class _BulbsCardState extends ConsumerState<BulbsCard> {
                     ),
                   )),
                   Switch(
-                      value:
-                          ref.watch(isActiveStateProvider(widget.bulbsEntity)),
+                      value: isActive,
                       onChanged: (value) {
-                        ref
-                            .read(isActiveStateProvider(widget.bulbsEntity)
-                                .notifier)
-                            .state = value;
-                        ref
-                            .read(
-                                brightnessLevelStateProvider(widget.bulbsEntity)
-                                    .notifier)
-                            .state = (value) ? 0.5 : 0;
                         ref
                             .read(deviceControllerProvider(
                                     widget.bulbsEntity.roomId)
@@ -115,15 +103,6 @@ class _BulbsCardState extends ConsumerState<BulbsCard> {
                       label: '${(brightnessLv * 100).toInt()}%',
                       divisions: 100,
                       onChanged: (v) {
-                        ref
-                            .read(isActiveStateProvider(widget.bulbsEntity)
-                                .notifier)
-                            .state = (v > 0);
-                        ref
-                            .read(
-                                brightnessLevelStateProvider(widget.bulbsEntity)
-                                    .notifier)
-                            .state = v;
                         ref
                             .read(deviceControllerProvider(
                                     widget.bulbsEntity.roomId)

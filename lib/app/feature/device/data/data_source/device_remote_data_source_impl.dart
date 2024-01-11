@@ -12,6 +12,8 @@ class _DeviceRemoteDataSourceImpl implements DeviceRemoteDataSource {
           .collection('device')
           .doc(deviceModel.createAt.toString())
           .set(deviceModel.toJson());
+      _updateActiveDeviceCount(roomId: deviceModel.roomId);
+      _updateDeviceCount(roomId: deviceModel.roomId);
     } on Exception catch (e) {
       rethrow;
     }
@@ -33,8 +35,11 @@ class _DeviceRemoteDataSourceImpl implements DeviceRemoteDataSource {
   }
 
   @override
-  Future<void> removeDevice({required String deviceId}) async {
+  Future<void> removeDevice(
+      {required String deviceId, required String roomId}) async {
     await _firestore.collection('device').doc(deviceId).delete();
+    _updateActiveDeviceCount(roomId: roomId);
+    _updateDeviceCount(roomId: roomId);
   }
 
   @override
@@ -43,5 +48,42 @@ class _DeviceRemoteDataSourceImpl implements DeviceRemoteDataSource {
         .collection('device')
         .doc(deviceModel.createAt.toString())
         .update(deviceModel.toJson());
+    _updateActiveDeviceCount(roomId: deviceModel.roomId);
+    _updateDeviceCount(roomId: deviceModel.roomId);
+  }
+
+  Future<void> _updateDeviceCount({required String roomId}) async {
+    final int count = await _getDeviceCount(roomId: roomId);
+    await _firestore
+        .collection('room')
+        .doc(roomId)
+        .update({'device_count': count});
+  }
+
+  Future<void> _updateActiveDeviceCount({required String roomId}) async {
+    final int count = await _getActiveDeviceCount(roomId: roomId);
+    await _firestore
+        .collection('room')
+        .doc(roomId)
+        .update({'running_device_count': count});
+  }
+
+  Future<int> _getActiveDeviceCount({required roomId}) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('device')
+        .where('room_id', isEqualTo: roomId)
+        .where('is_active', isEqualTo: true)
+        .get();
+
+    return querySnapshot.size;
+  }
+
+  Future<int> _getDeviceCount({required roomId}) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('device')
+        .where('room_id', isEqualTo: roomId)
+        .get();
+
+    return querySnapshot.size;
   }
 }

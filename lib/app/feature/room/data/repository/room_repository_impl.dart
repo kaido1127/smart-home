@@ -27,8 +27,8 @@ class _RoomRepositoryImpl implements RoomRepository {
 
   @override
   Future<void> removeRoom(
-      {required String roomId}) async {
-    _remoteDataSource.removeRoom(roomId: roomId);
+      {required String roomId, required String homeId}) async {
+    _remoteDataSource.removeRoom(roomId: roomId, homeId: homeId);
   }
 
   @override

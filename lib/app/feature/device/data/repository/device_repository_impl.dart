@@ -37,9 +37,9 @@ class _DeviceRepositoryImpl implements DeviceRepository {
   }
 
   @override
-  Future<void> removeDevice({required String deviceId}) async {
+  Future<void> removeDevice({required String deviceId,required String roomId}) async {
     try {
-      await _remoteDataSource.removeDevice(deviceId: deviceId);
+      await _remoteDataSource.removeDevice(deviceId: deviceId,roomId: roomId);
     } on Exception catch (e) {
       rethrow;
     }

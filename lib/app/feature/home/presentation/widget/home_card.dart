@@ -11,7 +11,7 @@ class HomeCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onLongPress: () => showRemoveHomeDialog(context, ref, homeEntity),
+      onLongPress: () => showRemoveHomeDialog(context, ref, homeEntity, false),
       onTap: () => context.push('/summary_room_page', extra: homeEntity),
       child: Card(
         color: Colors.lightBlue[50],
@@ -27,9 +27,8 @@ class HomeCard extends ConsumerWidget {
             homeEntity.homeName,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          subtitle: Text('Thiết bị đang bật: ${homeEntity.runningDeviceCount}'),
           trailing: Column(
-            //mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 homeEntity.roomCount.toString(),
@@ -47,8 +46,8 @@ class HomeCard extends ConsumerWidget {
   }
 }
 
-showRemoveHomeDialog(
-    BuildContext context, WidgetRef ref, HomeEntity homeEntity) {
+showRemoveHomeDialog(BuildContext context, WidgetRef ref, HomeEntity homeEntity,
+    bool isDoublePop) {
   showDialog(
       context: (context),
       builder: (context) {
@@ -63,6 +62,9 @@ showRemoveHomeDialog(
                       .read(homeControllerProvider(homeEntity.hostId).notifier)
                       .removeHome(homeId: homeEntity.createAt.toString());
                   context.pop();
+                  if (isDoublePop) {
+                    context.pop();
+                  }
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.red,

@@ -40,7 +40,7 @@ class _SummaryRoomPageState extends ConsumerState<SummaryRoomPage> {
               )),
           IconButton(
               onPressed: () =>
-                  showRemoveHomeDialog(context, ref, widget.homeEntity),
+                  showRemoveHomeDialog(context, ref, widget.homeEntity, true),
               icon: const CircleAvatar(
                 backgroundColor: Colors.red,
                 child: Icon(

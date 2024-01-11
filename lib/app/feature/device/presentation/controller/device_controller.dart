@@ -16,6 +16,7 @@ class DeviceController extends _$DeviceController {
       {required DeviceType deviceType, required String deviceName}) async {
     final int timeNow = DateTime.now().millisecondsSinceEpoch;
     late DeviceEntity newDevice;
+    print("[DeviceController] $deviceType");
     switch (deviceType) {
       case DeviceType.bulbs:
         newDevice = BulbsEntity(
@@ -54,10 +55,11 @@ class DeviceController extends _$DeviceController {
     await ref
         .read(deviceRepositoryProvider)
         .createDevice(deviceEntity: newDevice);
+    print('[DeviceController] ${newDevice.toModel().toJson().toString()}');
   }
 
   Future<void> removeDevice({required String deviceId}) async {
-    await ref.read(deviceRepositoryProvider).removeDevice(deviceId: deviceId);
+    await ref.read(deviceRepositoryProvider).removeDevice(deviceId: deviceId,roomId: roomId);
   }
 
   Future<void> updateDevice({required DeviceEntity deviceEntity}) async {

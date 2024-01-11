@@ -6,7 +6,9 @@ import 'package:smart_home/app/feature/device/domain/device_entity.dart';
 import 'package:smart_home/app/feature/device/presentation/controller/device_controller.dart';
 import 'package:smart_home/app/feature/device/presentation/widget/create_device_form.dart';
 import 'package:smart_home/app/feature/device/presentation/widget/device_card/bulbs_card.dart';
+import 'package:smart_home/app/feature/device/presentation/widget/device_card/door_card.dart';
 import 'package:smart_home/app/feature/device/presentation/widget/device_card/fan_card.dart';
+import 'package:smart_home/app/feature/device/presentation/widget/device_card/tv_card.dart';
 import 'package:smart_home/app/feature/room/domain/room_entity.dart';
 import 'package:smart_home/app/feature/room/enum/room_type.dart';
 import 'package:smart_home/app/feature/room/presentation/widget/room_card.dart';
@@ -51,7 +53,7 @@ class _SummaryDevicePageState extends ConsumerState<SummaryDevicePage> {
                 )),
             IconButton(
                 onPressed: () =>
-                    showRemoveRoomDialog(context, widget.roomEntity, ref),
+                    showRemoveRoomDialog(context, widget.roomEntity, ref, true),
                 icon: const CircleAvatar(
                   backgroundColor: Colors.red,
                   child: Icon(
@@ -71,18 +73,20 @@ class _SummaryDevicePageState extends ConsumerState<SummaryDevicePage> {
                         itemCount: listDevice.length,
                         itemBuilder: (BuildContext context, int index) {
                           final DeviceEntity deviceEntity = listDevice[index];
-                          return switch (listDevice[index]) {
-                            BulbsEntity() => BulbsCard(
-                                bulbsEntity: deviceEntity as BulbsEntity),
-                            TvEntity() => Container(
-                                color: Colors.green,
-                              ),
-                            DoorEntity() => Container(
-                                color: Colors.green,
-                              ),
-                            FanEntity() =>
-                              FanCard(fanEntity: deviceEntity as FanEntity),
-                          };
+                          return InkWell(
+                            onLongPress: () => showRemoveDeviceDialog(
+                                context, deviceEntity, ref, false),
+                            child: switch (listDevice[index]) {
+                              BulbsEntity() => BulbsCard(
+                                  bulbsEntity: deviceEntity as BulbsEntity),
+                              TvEntity() =>
+                                TvCard(tvEntity: deviceEntity as TvEntity),
+                              DoorEntity() => DoorCard(
+                                  doorEntity: deviceEntity as DoorEntity),
+                              FanEntity() =>
+                                FanCard(fanEntity: deviceEntity as FanEntity),
+                            },
+                          );
                         },
                       );
               },
@@ -110,4 +114,37 @@ class _SummaryDevicePageState extends ConsumerState<SummaryDevicePage> {
           );
         });
   }
+}
+
+showRemoveDeviceDialog(BuildContext context, DeviceEntity deviceEntity,
+    WidgetRef ref, bool isDoublePop) {
+  showDialog(
+      context: (context),
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Bạn có muốn xóa ${deviceEntity.deviceName} ?'),
+          actions: [
+            TextButton(
+                onPressed: () => context.pop(), child: const Text('Hủy')),
+            TextButton(
+                onPressed: () {
+                  ref
+                      .read(deviceControllerProvider(deviceEntity.roomId)
+                          .notifier)
+                      .removeDevice(deviceId: deviceEntity.createAt.toString());
+                  context.pop();
+                  if (isDoublePop) {
+                    context.pop();
+                  }
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Text(
+                  'Xóa',
+                  style: TextStyle(color: Colors.white),
+                )),
+          ],
+        );
+      });
 }

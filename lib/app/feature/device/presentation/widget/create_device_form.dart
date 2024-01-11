@@ -77,6 +77,7 @@ class _CreateDeviceFormState extends ConsumerState<CreateDeviceForm> {
                     .read(deviceControllerProvider(widget.roomId).notifier)
                     .createDevice(
                         deviceType: deviceType, deviceName: deviceName);
+                print('[CreateForm] $deviceType');
               } on Exception catch (e) {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(e.toString())));

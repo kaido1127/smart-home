@@ -29,6 +29,6 @@ class RoomController extends _$RoomController {
   }
 
   Future<void> removeRoom({required String roomId}) async {
-    ref.read(roomRepositoryProvider).removeRoom(roomId: roomId);
+    ref.read(roomRepositoryProvider).removeRoom(roomId: roomId, homeId: homeId);
   }
 }

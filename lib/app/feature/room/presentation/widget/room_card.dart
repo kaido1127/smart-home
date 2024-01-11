@@ -24,7 +24,8 @@ class _RoomCardState extends ConsumerState<RoomCard> {
     final RoomType roomType = widget.roomEntity.roomType;
 
     return InkWell(
-      onLongPress: () => showRemoveRoomDialog(context,widget.roomEntity,ref),
+      onLongPress: () =>
+          showRemoveRoomDialog(context, widget.roomEntity, ref, false),
       onTap: () =>
           context.push('/summary_device_page', extra: widget.roomEntity),
       child: Card(
@@ -102,34 +103,36 @@ class _RoomCardState extends ConsumerState<RoomCard> {
       ),
     );
   }
-
 }
-showRemoveRoomDialog(BuildContext context,RoomEntity roomEntity,WidgetRef ref) {
-    showDialog(
-        context: (context),
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Bạn có muốn xóa ${roomEntity.roomName} ?'),
-            actions: [
-              TextButton(
-                  onPressed: () => context.pop(), child: const Text('Hủy')),
-              TextButton(
-                  onPressed: () {
-                    ref
-                        .read(roomControllerProvider(roomEntity.homeId)
-                            .notifier)
-                        .removeRoom(
-                            roomId: roomEntity.createAt.toString());
+
+showRemoveRoomDialog(BuildContext context, RoomEntity roomEntity, WidgetRef ref,
+    bool isDoublePop) {
+  showDialog(
+      context: (context),
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Bạn có muốn xóa ${roomEntity.roomName} ?'),
+          actions: [
+            TextButton(
+                onPressed: () => context.pop(), child: const Text('Hủy')),
+            TextButton(
+                onPressed: () {
+                  ref
+                      .read(roomControllerProvider(roomEntity.homeId).notifier)
+                      .removeRoom(roomId: roomEntity.createAt.toString());
+                  context.pop();
+                  if (isDoublePop) {
                     context.pop();
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.red,
-                  ),
-                  child: const Text(
-                    'Xóa',
-                    style: TextStyle(color: Colors.white),
-                  )),
-            ],
-          );
-        });
-  }
+                  }
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Text(
+                  'Xóa',
+                  style: TextStyle(color: Colors.white),
+                )),
+          ],
+        );
+      });
+}

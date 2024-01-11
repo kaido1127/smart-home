@@ -173,7 +173,7 @@ class DoorEntity extends DeviceEntity {
       createAt: createAt,
       isActive: isActive,
       isOpen: isOpen,
-      deviceType: DeviceType.tv,
+      deviceType: DeviceType.door,
       isPause: isPause);
   DoorEntity copyWith({
     String? roomId,
@@ -189,7 +189,7 @@ class DoorEntity extends DeviceEntity {
       createAt: createAt ?? this.createAt,
       isActive: isActive ?? this.isActive,
       isOpen: isOpen ?? this.isOpen,
-      isPause: isPause ?? this.isPause,
+      isPause: isPause,
     );
   }
 }

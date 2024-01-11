@@ -11,7 +11,7 @@ class HomeCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onLongPress: () => showRemoveHomeDialog(context, ref),
+      onLongPress: () => showRemoveHomeDialog(context, ref, homeEntity),
       onTap: () => context.push('/summary_room_page', extra: homeEntity),
       child: Card(
         color: Colors.lightBlue[50],
@@ -45,33 +45,33 @@ class HomeCard extends ConsumerWidget {
       ),
     );
   }
+}
 
-  showRemoveHomeDialog(BuildContext context, WidgetRef ref) {
-    showDialog(
-        context: (context),
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Bạn có muốn xóa ${homeEntity.homeName} ?'),
-            actions: [
-              TextButton(
-                  onPressed: () => context.pop(), child: const Text('Hủy')),
-              TextButton(
-                  onPressed: () {
-                    ref
-                        .read(
-                            homeControllerProvider(homeEntity.hostId).notifier)
-                        .removeHome(homeId: homeEntity.createAt.toString());
-                    context.pop();
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.red,
-                  ),
-                  child: const Text(
-                    'Xóa',
-                    style: TextStyle(color: Colors.white),
-                  )),
-            ],
-          );
-        });
-  }
+showRemoveHomeDialog(
+    BuildContext context, WidgetRef ref, HomeEntity homeEntity) {
+  showDialog(
+      context: (context),
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Bạn có muốn xóa ${homeEntity.homeName} ?'),
+          actions: [
+            TextButton(
+                onPressed: () => context.pop(), child: const Text('Hủy')),
+            TextButton(
+                onPressed: () {
+                  ref
+                      .read(homeControllerProvider(homeEntity.hostId).notifier)
+                      .removeHome(homeId: homeEntity.createAt.toString());
+                  context.pop();
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Text(
+                  'Xóa',
+                  style: TextStyle(color: Colors.white),
+                )),
+          ],
+        );
+      });
 }

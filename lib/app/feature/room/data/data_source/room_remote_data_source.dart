@@ -6,7 +6,7 @@ part 'room_remote_data_source_impl.dart';
 
 abstract interface class RoomRemoteDataSource {
   Future<void> createRoom({required RoomModel roomModel});
-  Future<void> removeRoom({required String roomId,required String homeId});
+  Future<void> removeRoom({required String roomId});
   Future<void> updateHome({required RoomModel roomModel});
   Stream<List<RoomModel>> getAllRoom({required String homeId});
 

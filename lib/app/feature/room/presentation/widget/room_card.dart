@@ -24,14 +24,13 @@ class _RoomCardState extends ConsumerState<RoomCard> {
     final RoomType roomType = widget.roomEntity.roomType;
 
     return InkWell(
-      onLongPress: () => showRemoveRoomDialog(),
+      onLongPress: () => showRemoveRoomDialog(context,widget.roomEntity,ref),
       onTap: () =>
           context.push('/summary_device_page', extra: widget.roomEntity),
       child: Card(
         color: getColorFromRoomType(roomType),
         elevation: 5,
         child: SizedBox(
-          //height: contextSize.height * 0.2,
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Column(children: [
@@ -104,23 +103,23 @@ class _RoomCardState extends ConsumerState<RoomCard> {
     );
   }
 
-  showRemoveRoomDialog() {
+}
+showRemoveRoomDialog(BuildContext context,RoomEntity roomEntity,WidgetRef ref) {
     showDialog(
         context: (context),
         builder: (context) {
           return AlertDialog(
-            title: Text('Bạn có muốn xóa ${widget.roomEntity.roomName} ?'),
+            title: Text('Bạn có muốn xóa ${roomEntity.roomName} ?'),
             actions: [
               TextButton(
                   onPressed: () => context.pop(), child: const Text('Hủy')),
               TextButton(
                   onPressed: () {
                     ref
-                        .read(roomControllerProvider(widget.roomEntity.homeId)
+                        .read(roomControllerProvider(roomEntity.homeId)
                             .notifier)
                         .removeRoom(
-                            homeId: widget.roomEntity.homeId,
-                            roomId: widget.roomEntity.createAt.toString());
+                            roomId: roomEntity.createAt.toString());
                     context.pop();
                   },
                   style: TextButton.styleFrom(
@@ -134,4 +133,3 @@ class _RoomCardState extends ConsumerState<RoomCard> {
           );
         });
   }
-}

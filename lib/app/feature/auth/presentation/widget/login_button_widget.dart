@@ -30,11 +30,11 @@ class _LoginButtonWidgetState extends ConsumerState<LoginButtonWidget> {
                 height: contextSize.height * 0.06,
               ),
               label: RichText(
-                text: TextSpan(style: const TextStyle(fontSize: 18), children: [
+                text: TextSpan(style: const TextStyle(fontSize: 18,color: Colors.white), children: [
                   const TextSpan(text: 'Tiếp tục với '),
                   TextSpan(
                       text: user.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                      style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
                 ]),
               ),
             );

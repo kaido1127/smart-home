@@ -4,10 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:smart_home/app/app.dart';
 import 'package:smart_home/app/feature/home/domain/home_entity.dart';
 import 'package:smart_home/app/feature/home/presentation/controller/home_controller.dart';
+import 'package:smart_home/app/feature/home/presentation/widget/home_card.dart';
 import 'package:smart_home/app/feature/room/presentation/controller/room_controller.dart';
-import 'package:smart_home/app/feature/room/presentation/widget/create_room_form.dart';
+import 'package:smart_home/app/feature/device/presentation/widget/create_device_form.dart';
 import 'package:smart_home/app/feature/room/presentation/widget/room_card.dart';
 import 'package:smart_home/app/shared/widget/empty_widget.dart';
+
+import 'widget/create_room_form.dart';
 
 class SummaryRoomPage extends ConsumerStatefulWidget {
   final HomeEntity homeEntity;
@@ -36,13 +39,8 @@ class _SummaryRoomPageState extends ConsumerState<SummaryRoomPage> {
                 ),
               )),
           IconButton(
-              onPressed: () {
-                ref
-                    .read(homeControllerProvider(widget.homeEntity.hostId)
-                        .notifier)
-                    .removeHome(homeId: widget.homeEntity.createAt.toString());
-                context.pop();
-              },
+              onPressed: () =>
+                  showRemoveHomeDialog(context, ref, widget.homeEntity),
               icon: const CircleAvatar(
                 backgroundColor: Colors.red,
                 child: Icon(
@@ -81,7 +79,7 @@ class _SummaryRoomPageState extends ConsumerState<SummaryRoomPage> {
         builder: (context) {
           return AlertDialog(
             content: SizedBox(
-              height: contextSize.height * 0.3,
+              height: contextSize.height * 0.33,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CreateRoomForm(homeId: homeId),
